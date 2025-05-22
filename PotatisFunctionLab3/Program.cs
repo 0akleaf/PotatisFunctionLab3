@@ -5,14 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MongoDB.Driver.Core.Configuration;
-using AzureFunctions.Extensions.Swashbuckle;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
+var baseApiUrl = builder.Configuration["BaseApiUrl"];
+var functionKey = builder.Configuration["FunctionKey"];
+
 var connectionString = builder.Configuration.GetConnectionString("PotatisCosmosDb")
-    ?? throw new InvalidOperationException("Connection string 'AzureConnection:cosmosdb' not found.");
+    ?? throw new InvalidOperationException("Connection string 'PotatisCosmosDb' not found.");
 
 builder.Services.AddScoped<PotatisServices>(_ => new PotatisServices (
 
@@ -22,22 +24,3 @@ builder.Services.AddScoped<PotatisServices>(_ => new PotatisServices (
 ));
 
 builder.Build().Run();
-
-
-
-//var builder = Host.CreateApplicationBuilder();
-//builder.Services.AddSingleton<PotatisServices>(sp =>
-//    new PotatisServices(
-//        builder.Configuration["MongoDB:ConnectionString"],
-//        builder.Configuration["MongoDB:DatabaseName"]
-//    )
-//);
-
-//// Add Swagger support
-//builder.Services.AddSwashBuckle(assembly: typeof(Program).Assembly);
-
-//var app = builder.Build();
-
-//app.UseSwashBuckle(); // Enable Swagger middleware
-
-//app.Run();
