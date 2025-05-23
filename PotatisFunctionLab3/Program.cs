@@ -10,10 +10,7 @@ var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
 
-var baseApiUrl = builder.Configuration["BaseApiUrl"];
-var functionKey = builder.Configuration["FunctionKey"];
-
-var connectionString = builder.Configuration.GetConnectionString("PotatisCosmosDb")
+var connectionString = Environment.GetEnvironmentVariable("PotatisCosmosDb")
     ?? throw new InvalidOperationException("Connection string 'PotatisCosmosDb' not found.");
 
 builder.Services.AddScoped<PotatisServices>(_ => new PotatisServices (

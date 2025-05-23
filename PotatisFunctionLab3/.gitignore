@@ -3,6 +3,7 @@
 
 # Azure Functions localsettings file
 local.settings.json
+requests.http
 
 # User-specific files
 *.suo
